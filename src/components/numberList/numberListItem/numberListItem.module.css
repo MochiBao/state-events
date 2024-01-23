@@ -1,0 +1,25 @@
+.number_list_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .number_list_item:last-child {
+    border-bottom: none;
+  };
+ 
+  .button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  /* .button:hover {
+    background-color: #0069d9;
+  } */

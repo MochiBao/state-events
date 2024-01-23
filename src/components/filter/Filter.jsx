@@ -1,20 +1,22 @@
 import React from 'react'
+import s from './filter.module.css'
 
-const Filter = ({ plusFilter }) => {
+const Filter = ({ filter, plusFilter }) => {
   return (
-    <label>
+    <div className={s.filter_container}>
+    <label className={s.filter_label}>
           <span>Filter by name</span>
-          <input
+          <input className={s.filter_input}
             type="text"
             name="name"
-            value={name}
+            value={filter}
             onChange={plusFilter}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             autoComplete="off"
           />
         </label>
+    </div>
   )
 }
 

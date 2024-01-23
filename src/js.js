@@ -16,8 +16,6 @@ const newArr = [...phones, newPhone] // додати елемент
 
 const phoneDelete = newArr.filter((item) => item.id /= 7) // видалити елемент 
 
-console.log(newArr);
-console.log(phoneDelete);
 
 
 const newPhonee = {
@@ -28,4 +26,3 @@ const newPhonee = {
 const updatePhone = newArr.map((phone) => {
     return phone.id === 2 ? {...phone, newPhonee} : phone;
 }) // оновити елемент 
-console.log(updatePhone);

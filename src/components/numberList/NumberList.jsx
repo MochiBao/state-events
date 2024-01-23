@@ -1,26 +1,28 @@
 import NumberListItem from "./numberListItem/NumberListItem"
+import React from 'react'
+import  s from './numberList.module.css'
 
-class NumberList extends Component {
-  componentDidUpdate() {
-    console.log("NumberList оновився");
-    // Новий елемент додати в local Storage
-  }
-  render () {
+const NumberList = ({data, deletePhone}) => {
+  // componentDidUpdate() {
+  //   console.log("NumberList оновився");
+  //   // Новий елемент додати в local Storage
+  // }
+
   return (
-    <ul>
-        {this.props.data.map(({id, name, phone}) => {
+    <ul className={s.number_list}>
+        {data.map(({id, name, phone}) => {
             return <NumberListItem 
             key={id} 
             id={id} 
             name={name} 
             phone={phone}
-            deletePhone={this.props.deletePhone}
+            deletePhone={deletePhone}
             />
         })}
     </ul>
-  ) 
-}
-}
+  ) }
+
+
     
 
-export default NumberListItem;
+export default NumberList;

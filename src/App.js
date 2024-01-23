@@ -1,118 +1,114 @@
-import React, { Component } from "react";
-// import Buttons from "./components/buttons/Buttons";
-// import Statistics from "./components/statistics/Statistics";
-// import Notification from './components/notification/Notification';
 import NumberList from "./components/numberList/NumberList";
+import './App.css';
 import Form from "./components/form/Form";
 import Filter from "./components/filter/Filter";
-export default class App extends Component {
+import { useEffect, useState } from "react";
+function App () {
 
-  state = {
-    phones : [
-    {id:1, name: "Anton", phone: "735-07-97"},
-    {id:2, name: "Gandon", phone: "735-06-97"},
-    {id:3, name: "Pituh", phone: "735-05-97"},
-    {id:4, name: "Seriy", phone: "735-04-97"}, 
-    ],  
+  // state = {
+  //   phones : [
+  //   {id:1, name: "Anton", phone: "735-07-97"},
+  //   {id:2, name: "Anton2", phone: "735-06-97"},
+  //   {id:3, name: "Seriy", phone: "735-05-97"},
+  //   {id:4, name: "Seriy2", phone: "735-04-97"}, 
+  //   ],  
 
-    filter: "",
-    error: false,
-  };
+  //   filter: "",
+  //   error: false,
+  // };
 
-  componentDidMount () {
-    // HTTP req, event
-    const storageData = localStorage.getItem("phones")
-    const parsedStorageData = JSON.parse.storageData
-    console.log(parsedStorageData);
+  const phoness = [
+      {id:1, name: "Anton", phone: "735-07-97"},
+      {id:2, name: "Anton2", phone: "735-06-97"},
+      {id:3, name: "Seriy", phone: "735-05-97"},
+      {id:4, name: "Seriy2", phone: "735-04-97"}, 
+    ];
 
-    //Обов'язково записувати умову, щоб не зациклити дію
-    if (parsedStorageData) {
-      this.setState({
-        phones:parsedStorageData
-      })
+  const storageData = localStorage.getItem("phones")
+  const parsedStorageData = JSON.parse(storageData);
+
+
+  const [phones, setPhones] = useState(() => parsedStorageData || phoness)
+  const [filter, setFilter] = useState("")
+  const [error, setError] = useState(false)
+
+
+ 
+
+  // shouldComponentUpdate(nextProps, nextState ) {
+  //   // Спрацьовує  перед методом рендер і вказує чи має 
+  //   // рендеритись компонент, якщо повертається false 
+  //   // рендер не відбувається
+  //   if (nextState.phones === this.state.phones) {
+  //     return false;
+  //   }
+  //   return true;
+  // };
+
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("phones", JSON.stringify(phones))
+    } catch (error) {
+      setError(`${error.message}`)
     }
-  }
+      
+  }, [phones])
+ 
 
-  shouldComponentUpdate(nextProps, nextState ) {
-    // Спрацьовує  перед методом рендер і вказує чи має 
-    // рендеритись компонент, якщо повертається false 
-    // рендер не відбувається
-    if (nextState.phones === this.state.phones) {
-      return false;
-    }
-    return true;
-  };
+  // componentDidCatch() {
+  //   this.setState({error: true});
+  // }
 
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.phones !== prevState.phones) {
-        localStorage.setItem("phones", JSON.stringify(this.state.phones))
-
-    }
-    
-  };
-
-  componentDidCatch() {
-    //слугує для 
-    this.setState({error: true});
-  }
-
-  plusContact = (contact) => {
-    if (this.state.phones .find((phone) => phone.name.toLowerCase() === phone.name.toLowerCase())) {
+  const plusContact = (contact) => {
+    if (phones.find((phone) => contact.name.toLowerCase() === phone.name.toLowerCase())) {
       alert("Такий контакт вже є")
     } else {
-      this.setState( prev => ({
-        phones: [...prev.phones, contact]}))
-    }
-  }
+      setPhones(prev => [...prev, contact]);
+  }};
 
-  plusFilter = (e) => {
+  const plusFilter = (e) => {
     const {value} = e.target;
-    this.setState({filter: value})
+    setFilter(value)
   };
 
-  filterByName = () => {
-    const {phones, filter } = this.state;
+  const filterByName = () => {
     const filterPhones = phones.filter((phone) => {
-      phones.filter((phone) => {
-        return phone.name.toLowerCase().includes(filter.toLowerCase); 
-      })
+      return phone.name.toLowerCase().includes(filter.toLowerCase()); 
+      // return phone.filter((phone) => {
+      //   return phone.name.toLowerCase().includes(filter.toLowerCase); 
+      // })
     });
+   
     return filterPhones;
 
   }
-
-  deletePhone = (id) => {
-    this.setState(prevState => ({
-      phones: prevState.phones.filter((item) => item.id /= id)
-    }));
-
-    }
-    // this.setState((prev) => {
-    //   prev.phones.filter((item) => {
-    //     return item.id /= id
-    //   })
-    // })
   
-  render() {
-    if (this.state.error === true) {
-      <h1>Вибачте, сайт впав</h1>
-      
-    }
 
-    // const {phones} = this.state;
-    const {plusContact, plusFilter} = this
-    const filterElements = this.filterByName()
+  const deletePhone = (id) => {
+    setPhones(prev => prev.filter((item) => item.id !== id));
+    };
 
+    const filterElements = filterByName();
+
+   
    return (
-    <>
-    <Form plusContact={plusContact}></Form>
-    <Filter plusFilter={plusFilter}/>
-    <NumberList data={filterElements} deletePhone={this.deletePhone}/>
-    </>
+    <div className="main">
+    {error && <h1>Вибачте, сайт впав</h1>}
+    <Form plusContact={plusContact}/>
+    <Filter filter={filter} plusFilter={plusFilter} />
+    <NumberList data={filterElements} deletePhone={deletePhone}/>
+    </div>
    )
-  }}
+  };
   
+export default App;
+
+
+
+
+
+
 
 //   const [good, setGood] = useState(0);
 //   const [neutral, setNeutral] = useState(0)
